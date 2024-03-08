@@ -3,10 +3,10 @@ import os
 
 import requests
 
-from code.hh_abstract import HhAbstract
+from code.API_abstract import APIAbstract
 
 
-class HeadHunterAPI(HhAbstract):
+class HeadHunterAPI(APIAbstract):
     """
     Класс, который получает информацию о вакансиях hh.ru
     """
@@ -14,35 +14,15 @@ class HeadHunterAPI(HhAbstract):
 
     def getting_vacancies(self, text: str):
         """
-        :param text: профессия
-        :return: Информацию о вакансиях
+        :param text: информация для поиска вакансий на hh.ru
+        :return: список вакансий с hh.ru
         """
 
         params = {'area': 113,
                   'text': text}
         url = f'https://api.hh.ru/vacancies'
         response = requests.get(url, params=params, headers={'apikey': self.API_KEY})
-        response_data = json.loads(response.text)
-        vacancies = []
-        for vacancy in response_data['items']:
-            if vacancy['salary']:
-                vacancy_dict = {
-                    'name': vacancy['name'],
-                    'url': vacancy['url'],
-                    'salary': vacancy['salary']['from'],
-                    'area': vacancy['area']['name'],
-                    'published_at': vacancy['published_at']
-                }
-                vacancies.append(vacancy_dict)
-            else:
-                vacancy_dict = {
-                    'name': vacancy['name'],
-                    'url': vacancy['url'],
-                    'salary': vacancy['salary'],
-                    'area': vacancy['area']['name'],
-                    'published_at': vacancy['published_at']
-                }
-                vacancies.append(vacancy_dict)
-
-        return vacancies
-
+        if response.status_code == 200:
+            response_data = json.loads(response.text)
+            return response_data['items']
+        raise ConnectionError
