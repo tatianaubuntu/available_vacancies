@@ -10,6 +10,6 @@ class APIAbstract(ABC):
     def getting_vacancies(self, text: str):
         """
         :param text: информация для поиска вакансий
-        :return: исписок вакансий
+        :return: список вакансий
         """
         pass
