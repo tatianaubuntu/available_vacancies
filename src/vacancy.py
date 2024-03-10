@@ -17,8 +17,18 @@ class Vacancy:
         """
         self.name = name
         self.url = url
-        self.__salary_from = salary_from
-        self.__salary_to = salary_to
+        try:
+            self.__salary_from = salary_from
+            if not salary_from:
+                raise TypeError
+        except TypeError:
+            self.__salary_from = 0
+        try:
+            self.__salary_to = salary_to
+            if not salary_to:
+                raise TypeError
+        except TypeError:
+            self.__salary_to = 0
         self.area = area
         self.published_at = published_at
 
@@ -39,25 +49,39 @@ class Vacancy:
                                                                              vacancy['salary']['to'],
                                                                              vacancy['area']['name'],
                                                                              vacancy['published_at'])
-                except KeyError:
-                    salary_from, salary_to = 0, 0
+                except TypeError:
+                    name, url, salary_from, salary_to, area, published_at = (vacancy['name'],
+                                                                             vacancy['url'],
+                                                                             0,
+                                                                             0,
+                                                                             vacancy['area']['name'],
+                                                                             vacancy['published_at'])
                 vacancies_list.append(cls(name, url, salary_from, salary_to, area, published_at))
             return vacancies_list
+
+    @property
+    def salary_from(self):
+        return self.__salary_from
+
+    @property
+    def salary_to(self):
+        return self.__salary_to
+
+    def __type_error(self, salary: int):
+        if not isinstance(salary, int):
+            raise TypeError
+        return salary
 
     def __le__(self, salary_to: int):
         """
         :param salary_to: зарплата, предлагаемая пользователем до
         :return: True, если self.__salary_to <= salary_to
         """
-        if not isinstance(salary_to, int):
-            raise TypeError
-        return self.__salary_to <= salary_to
+        return self.__salary_to <= self.__type_error(salary_to)
 
     def __ge__(self, salary_from: int):
         """
         :param salary_from: зарплата, предлагаемая пользователем от
         :return: True, если self.__salary_from >= salary_from
         """
-        if not isinstance(salary_from, int):
-            raise TypeError
-        return self.__salary_from >= salary_from
+        return self.__salary_from >= self.__type_error(salary_from)
