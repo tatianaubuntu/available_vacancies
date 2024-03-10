@@ -1,6 +1,6 @@
 import json
 
-from code.file_abstract import FileAbstract
+from src.file_abstract import FileAbstract
 from config import VACANCIES_FILE
 
 

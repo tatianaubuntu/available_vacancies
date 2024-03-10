@@ -20,6 +20,5 @@ def test_vacancy3(vacancy1):
         vacancy1 <= 'vacancy1'
 
 
-
-def test_cast_to_object_list():
-    assert Vacancy.cast_to_object_list(TEST_VACANCIES_FILE)[0].name == 'Удаленный диспетчер чатов (в Яндекс)'
+def test_cast_to_object_list(vacancies):
+    assert vacancies[0].name == 'Удаленный диспетчер чатов (в Яндекс)'

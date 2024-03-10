@@ -1,5 +1,7 @@
 import pytest
 
+from config import TEST_VACANCIES_FILE
+from src.filter_functions import get_vacancies_by_salary, sort_vacancies, get_top_vacancies
 from src.vacancy import Vacancy
 
 
@@ -21,4 +23,40 @@ def vacancy2():
                    None,
                    "Россия",
                    "2024-02-19T09:38:06+0300")
+
+
+@pytest.fixture
+def vacancies():
+    return Vacancy.cast_to_object_list(TEST_VACANCIES_FILE)
+
+
+@pytest.fixture
+def vacancies_by_salary1(vacancies):
+    return get_vacancies_by_salary(vacancies, [0])
+
+
+@pytest.fixture
+def vacancies_by_salary2(vacancies):
+    return get_vacancies_by_salary(vacancies, [0, 40000])
+
+
+@pytest.fixture
+def ranged_vacancies(vacancies_by_salary1):
+    return sort_vacancies(vacancies_by_salary1)
+
+
+@pytest.fixture
+def top_vacancies1(ranged_vacancies):
+    return get_top_vacancies(ranged_vacancies, '5')
+
+
+@pytest.fixture
+def top_vacancies2(ranged_vacancies):
+    return get_top_vacancies(ranged_vacancies, '')
+
+
+
+
+
+
 
