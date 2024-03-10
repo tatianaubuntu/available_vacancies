@@ -3,7 +3,7 @@ import os
 
 import requests
 
-from code.API_abstract import APIAbstract
+from src.api_abstract import APIAbstract
 
 
 class HeadHunterAPI(APIAbstract):
