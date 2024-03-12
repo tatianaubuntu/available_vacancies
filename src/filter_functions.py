@@ -1,3 +1,6 @@
+from dateutil.parser import parse
+
+
 def get_vacancies_by_salary(filtered_vacancies: list, salary_range: list):
     """
     :param filtered_vacancies: список отфильтрованных вакансий
@@ -16,10 +19,11 @@ def get_vacancies_by_salary(filtered_vacancies: list, salary_range: list):
 
 def sort_vacancies(ranged_vacancies: list):
     """
-    :param ranged_vacancies: список вакансий в соответствии с диапазоном зарплаты
+    :param ranged_vacancies: список вакансий с диапазоном зарплаты
     :return: отсортированный список вакансий по дате публикации
     """
-    ranged_vacancies.sort(key=lambda vacancy: vacancy.published_at, reverse=True)
+    ranged_vacancies.sort(key=lambda vacancy: vacancy.published_at,
+                          reverse=True)
     return ranged_vacancies
 
 
@@ -41,6 +45,11 @@ def print_vacancies(top_vacancies: list):
     Вывод вакансий на экран
     """
     for vacancy in top_vacancies:
-        vacancy_list = list(vacancy.__dict__.values())
-        print(vacancy_list)
-
+        date = parse(vacancy.published_at)
+        vacancy_print = (f"Наименование: {vacancy.name}, "
+                         f"url: {vacancy.url}, "
+                         f"зарплата от: {vacancy.salary_from}, "
+                         f"зарплата до: {vacancy.salary_to}, "
+                         f"регион: {vacancy.area}, "
+                         f"дата публикации: {date:%d.%m.%Y} {date:%H:%M:%S}")
+        print(vacancy_print)

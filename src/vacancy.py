@@ -5,8 +5,16 @@ class Vacancy:
     """
     Класс для работы с вакансией
     """
+    __slots__ = ('name', 'url', '__salary_from',
+                 '__salary_to', 'area', 'published_at')
 
-    def __init__(self, name: str, url: str, salary_from: int, salary_to: int, area: str, published_at: str):
+    def __init__(self,
+                 name: str,
+                 url: str,
+                 salary_from: int,
+                 salary_to: int,
+                 area: str,
+                 published_at: str):
         """
         :param name: название вакансии
         :param url: ссылка на вакансию
@@ -38,26 +46,28 @@ class Vacancy:
         :param vacancies_json: информация о вакансиях в формате JSON
         :return: список объектов вакансий
         """
-        with open(vacancies_json, encoding='utf-8') as json_file:
-            data_list = json.load(json_file)
-            vacancies_list = []
-            for vacancy in data_list:
-                try:
-                    name, url, salary_from, salary_to, area, published_at = (vacancy['name'],
-                                                                             vacancy['url'],
-                                                                             vacancy['salary']['from'],
-                                                                             vacancy['salary']['to'],
-                                                                             vacancy['area']['name'],
-                                                                             vacancy['published_at'])
-                except TypeError:
-                    name, url, salary_from, salary_to, area, published_at = (vacancy['name'],
-                                                                             vacancy['url'],
-                                                                             0,
-                                                                             0,
-                                                                             vacancy['area']['name'],
-                                                                             vacancy['published_at'])
-                vacancies_list.append(cls(name, url, salary_from, salary_to, area, published_at))
-            return vacancies_list
+        data_list = json.load(vacancies_json)
+        vacancies_list = []
+        for vacancy in data_list:
+            try:
+                (name, url, salary_from,
+                 salary_to, area, published_at) = (vacancy['name'],
+                                                   vacancy['url'],
+                                                   vacancy['salary']['from'],
+                                                   vacancy['salary']['to'],
+                                                   vacancy['area']['name'],
+                                                   vacancy['published_at'])
+            except TypeError:
+                (name, url, salary_from,
+                 salary_to, area, published_at) = (vacancy['name'],
+                                                   vacancy['url'],
+                                                   0,
+                                                   0,
+                                                   vacancy['area']['name'],
+                                                   vacancy['published_at'])
+            vacancies_list.append(cls(name, url, salary_from,
+                                      salary_to, area, published_at))
+        return vacancies_list
 
     @property
     def salary_from(self):
@@ -67,7 +77,8 @@ class Vacancy:
     def salary_to(self):
         return self.__salary_to
 
-    def __type_error(self, salary: int):
+    @staticmethod
+    def __type_error(salary: int):
         if not isinstance(salary, int):
             raise TypeError
         return salary

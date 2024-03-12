@@ -18,6 +18,20 @@ class JSONSaver(FileAbstract):
             json.dump(vacancies, f)
             print('Информация сохранена')
 
+    def open_vacancies(self):
+        """
+        Метод открывает JSON-файл с вакансиями
+        """
+        json_file = open(VACANCIES_FILE, 'r')
+        return json_file
+
+    def close_vacancies(self):
+        """
+        Метод закрывает JSON-файл с вакансиями
+        """
+
+        pass
+
     def add_vacancy(self, vacancy: dict):
         """
         :param vacancy: новая вакансия

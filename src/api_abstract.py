@@ -7,8 +7,9 @@ class APIAbstract(ABC):
     """
 
     @abstractmethod
-    def getting_vacancies(self, text: str):
+    def getting_vacancies(self, text: str, per_page: int):
         """
+        :param per_page: количество вакансий
         :param text: информация для поиска вакансий
         :return: список вакансий
         """
