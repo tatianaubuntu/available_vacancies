@@ -1,9 +1,8 @@
-from src.filter_functions import get_vacancies_by_salary, sort_vacancies, get_top_vacancies, \
-    print_vacancies
+from src.filter_functions import (get_vacancies_by_salary, sort_vacancies,
+                                  get_top_vacancies, print_vacancies)
 from src.head_hunter_api import HeadHunterAPI
 from src.json_saver import JSONSaver
 from src.vacancy import Vacancy
-from config import VACANCIES_FILE
 
 
 def user_interaction():
@@ -12,11 +11,14 @@ def user_interaction():
     """
     search_query = input("""Добро пожаловать на платформу 'HeadHunter'
 Пожалуйста, введите поисковый запрос: """)
+    per_page = int(input("Количество вакансий для сохранения: "))
     hh_api = HeadHunterAPI()
-    vacancies = hh_api.getting_vacancies(search_query)
+    vacancies = hh_api.getting_vacancies(search_query, per_page)
     json_saver = JSONSaver()
     json_saver.save_vacancies(vacancies)
-    vacancies_list = Vacancy.cast_to_object_list(VACANCIES_FILE)
+    json_vacancies = json_saver.open_vacancies()
+    vacancies_list = Vacancy.cast_to_object_list(json_vacancies)
+    json_vacancies.close()
     salary_range = input("Введите диапазон зарплат через пробел: ").split()
     ranged_vacancies = get_vacancies_by_salary(vacancies_list, salary_range)
     sorted_vacancies = sort_vacancies(ranged_vacancies)

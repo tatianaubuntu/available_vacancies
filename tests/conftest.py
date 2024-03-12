@@ -1,7 +1,8 @@
 import pytest
 
 from config import TEST_VACANCIES_FILE
-from src.filter_functions import get_vacancies_by_salary, sort_vacancies, get_top_vacancies
+from src.filter_functions import (get_vacancies_by_salary,
+                                  sort_vacancies, get_top_vacancies)
 from src.vacancy import Vacancy
 
 
@@ -27,7 +28,8 @@ def vacancy2():
 
 @pytest.fixture
 def vacancies():
-    return Vacancy.cast_to_object_list(TEST_VACANCIES_FILE)
+    with open(TEST_VACANCIES_FILE) as f:
+        return Vacancy.cast_to_object_list(f)
 
 
 @pytest.fixture
@@ -53,10 +55,3 @@ def top_vacancies1(ranged_vacancies):
 @pytest.fixture
 def top_vacancies2(ranged_vacancies):
     return get_top_vacancies(ranged_vacancies, '')
-
-
-
-
-
-
-

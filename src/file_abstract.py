@@ -14,6 +14,20 @@ class FileAbstract(ABC):
         pass
 
     @abstractmethod
+    def open_vacancies(self):
+        """
+        Метод открывает файл с вакансиями
+        """
+        pass
+
+    @abstractmethod
+    def close_vacancies(self):
+        """
+        Метод закрывает файл с вакансиями
+        """
+        pass
+
+    @abstractmethod
     def add_vacancy(self, vacancy: dict):
         """
         :param vacancy: новая вакансия
@@ -28,4 +42,3 @@ class FileAbstract(ABC):
         Метод удаляет вакансию из файла
         """
         pass
-

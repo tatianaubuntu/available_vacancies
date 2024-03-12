@@ -1,8 +1,5 @@
 import pytest
 
-from config import TEST_VACANCIES_FILE
-from src.vacancy import Vacancy
-
 
 def test_vacancy1(vacancy1):
     assert vacancy1.area == 'Россия'
